@@ -1,0 +1,9 @@
+.liBox {
+    list-style-type: none;
+    display: inline-block;
+    margin: 8px;
+}
+
+h2 {
+    text-align: center;
+}

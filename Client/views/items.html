@@ -1,0 +1,33 @@
+    <div>
+        <h2>Items</h2>
+        <ul>
+            <li ng-repeat="item in items" class="liBox">
+                <div class="wrap">
+                    <h1>{{item.title}} - {{item.price}}</h1>
+
+                    <p>{{item.description}}</p>
+                    <p>{{item.category}}</p>
+                    <a ng-click="deleteItem($index)">delete</a>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div>
+        <h2>Add new items</h2>
+
+        <div>
+            <div>Title: <input type="text" ng-model="newItem.title"/></div>
+            <div>Description: <input type="text" ng-model="newItem.description"/></div>
+            <div>Category: <input type="text" ng-model="newItem.category"/></div>
+            <div>Price: <input type="number" ng-model="newItem.price"/></div>
+            <div><input type="button" ng-click="addNewItem()" value="Add"/></div>
+
+
+        </div>
+    </div>
+
+
+<div ng-if="unauthorized">
+
+    <b>You are not authorized, why are you here? </b> <a href="#/login">login first</a>
+</div>

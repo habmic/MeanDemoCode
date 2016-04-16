@@ -7,7 +7,7 @@ angular.module('app').controller('loginController', function ($scope, $http, $lo
 
         $http.post('http://localhost:8081/api/auth', { username: $scope.username, password: $scope.password}).success(function (data) {
 
-            authService.token = data.token;
+            authService.setToken(data.token);
 
             $location.path("/homepage");
 

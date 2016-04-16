@@ -6,6 +6,12 @@ var express = require('express');
 var app = express();
 var config = require('./config/config.js')
 
+var expressSession = require('express-session');
+var couchbaseSession = require('./externalSession/couchbaseSession.js')(expressSession);
+
+var couchbaseStore = new couchbaseSession();
+
+
 var bodyParse = require('body-parser');
 var path = require("path");
 
@@ -19,6 +25,13 @@ app.use(bodyParse.urlencoded({extended : true}));
 var port = process.env.PORT || 8081;
 
 app.use(express.static(__dirname + '/client'));
+
+app.use(expressSession({
+    secret:'devweek',
+    key:'2016',
+    proxy:'true',
+    store: couchbaseStore
+}));
 
 var router = express.Router();
 

@@ -1,17 +1,28 @@
 /**
  * Created by HaberMic on 9/25/15.
  */
-var app = angular.module('app',['ngRoute'])
+var app = angular.module('app',['ngRoute','ngCookies'])
 
 
-app.factory('authInterceptor', function ($q,authService) {
+app.factory('authInterceptor', function ($q,authService, $location) {
     return {
         request: function(config) {
             config.headers = config.headers || {};
 
-            config.headers.token = authService.token;
+            config.headers.token = authService.getToken();
 
             return config || $q.when(config);
+        },
+        responseError: function(res) {
+
+            if (res.status === 401 ) {
+
+                $location.path('/login');
+
+            }
+
+            return $q.reject(res);
+
         }
     };
 });

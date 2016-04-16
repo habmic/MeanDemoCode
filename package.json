@@ -19,7 +19,9 @@
   "dependencies": {
     "async": "1.5.2",
     "body-parser": "1.15.0",
+    "couchbase": "2.1.5",
     "express": "4.13.4",
+    "express-session": "1.13.0",
     "jsonwebtoken": "5.7.0",
     "mongoose": "4.4.12"
   }

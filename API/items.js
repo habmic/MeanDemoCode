@@ -1,54 +1,65 @@
 /**
  * Created by HaberMic on 10/3/15.
  */
+var mongoose = require('mongoose');
 
-var models = require('../db/models.js');
 
-module.exports = function(router){
+module.exports = function (router) {
 
-    router.get('/items', function (req,res) {
-            models.Item.find({}, function(err, data){
+    router.get('/items', function (req, res) {
 
-                if(err) throw err;
+        if(!req.session){
+            req.status(200).json({});
+            return;
+        }
 
-                res.status(200).json(data);
+        res.status(200).json(req.session.items);
 
-            });
     });
 
     router.post('/item', function (req, res) {
 
-        var item = new models.Item({
+        var item = {
             title: req.body.title,
             description: req.body.description,
             category: req.body.category,
+            _id:mongoose.Types.ObjectId(),
 
             createTime: req.body.createTime,
             lastUpdateTime: req.body.lastUpdateTime,
 
             price: req.body.price
-        });
+        };
 
-        item.save(function(err,data){
-            if(err) {
-                res.status(500).json({err: err});
-            } else {
-                res.status(200).json({newItem : data});
-            }
-        })
+        if (req.session.items) {
+            req.session.items.push(item);
+        } else {
+            req.session.items = [item];
+        }
+
+        res.status(201).json(req.session.items);
     })
 
     router.delete('/item?:id', function (req, res) {
-        models.Item.findOne({_id : req.query.id}).remove().exec(function (err, result) {
 
-            if(err){
+        if (req.session.items) {
 
-              return  res.status(500).json({reason: err});
-            } else {
+            var items = req.session.items;
 
-                res.status(200).json({status: result });
+            for(var i = 0; i < items.length; i++){
+                if(items[i]._id == req.query.id){
+                    req.session.items.splice(i,1);
+                    break;
+                }
             }
-        })
+
+            res.status(200).json( req.session.items);
+
+
+        } else {
+            return res.status(200).json({reason: 'no items'});
+        }
+
     })
 
 }

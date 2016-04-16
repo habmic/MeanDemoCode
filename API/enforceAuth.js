@@ -17,7 +17,7 @@ module.exports = function(router){
                 if(err) {
 
                     console.log('token is invalid!')
-                    return res.status(403).json({reason: 'invalid token'});
+                    return res.status(401).json({reason: 'invalid token'});
 
                 } else {
 
@@ -33,7 +33,7 @@ module.exports = function(router){
 
             console.log('token is missing!')
 
-            return res.status(403).json({reason: 'token missing'});
+            return res.status(401).json({reason: 'token missing'});
         }
     })
 }

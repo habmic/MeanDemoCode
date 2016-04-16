@@ -8,7 +8,9 @@ angular.module('app').controller('itemsController', function ($scope,$http) {
 
     $http.get('http://localhost:8081/api/items').success(function (data) {
 
-       $scope.items = data;
+        if(data && data.length > 0) {
+            $scope.items = data;
+        }
 
     }).error(function(err, code){
 

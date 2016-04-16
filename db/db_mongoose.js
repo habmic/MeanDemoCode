@@ -11,7 +11,7 @@ var models = require('../db/models.js');
 module.exports.initDB = function () {
 
     async.waterfall([
-        connect,
+        connect, 
         function findUser (callback) {
             models.User.findOne({username: 'admin', password: '123'}, callback);
         },

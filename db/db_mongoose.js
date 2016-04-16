@@ -14,7 +14,7 @@ module.exports.initDB = function () {
         if(err) { throw  err;}
 
         if(user.length == 0){
-            models.User.create({username: 'admin', password :'123'}, function (err, data) {
+            models.User.create({email: 'admin',firstName:'admin',lastName:'admin', password :'123'}, function (err, data) {
 
                 if(err) { throw err}
 

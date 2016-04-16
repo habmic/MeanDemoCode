@@ -48,7 +48,7 @@ module.exports.initDB = function () {
 var findUserAndInsert = function (db) {
     db.collection('users', function(err, users){
         users.find({username: 'admin', password:'123'}).toArray(function(err, data){
-            if(data.length != 1) {
+            if(data.length == 0) {
                 insertStartupUser(err);
             }
         });

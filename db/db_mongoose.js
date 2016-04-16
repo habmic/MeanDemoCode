@@ -3,31 +3,50 @@
  */
 
 var mongoose = require('mongoose');
+var async = require('async');
 
 var models = require('../db/models.js');
 
-module.exports.connectionString = "";
 
 module.exports.initDB = function () {
-    connect();
-    models.User.find({username: 'admin', password :'123'}, function (err, user) {
-        if(err) { throw  err;}
 
-        if(user.length == 0){
-            models.User.create({email: 'admin',firstName:'admin',lastName:'admin', password :'123'}, function (err, data) {
+    async.waterfall([
+        connect,
+        function findUser (callback) {
+            models.User.findOne({username: 'admin', password: '123'}, callback);
+        },
+        function addUserIfNeeded (user,callback) {
+            if(!user){
+                var adminUser = new models.User({username: 'admin',firstName:'admin',lastName:'admin', password :'123'});
+                adminUser.save(function (err, data) {
 
-                if(err) { throw err}
+                    if(err) callback(err);
+                    else {
+                        console.log('admin created');
+                        callback();
+                    }
+                })
+            } else {
+                callback();
+            }
 
-                data.save();
-                console.log('admin created')
-            })
         }
-    })
+    ]);
+
+
 };
 
 module.exports.connectionString = "";
 
 function connect(callback){
-    mongoose.connect(module.exports.connectionString);
+    mongoose.connect(module.exports.connectionString, function (err) {
+        if(err){
+            callback(err);
+            console.error(err);
+        } else {
+            callback();
+            console.log('db is up');
+        }
+    });
 }
 

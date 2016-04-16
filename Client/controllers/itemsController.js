@@ -12,7 +12,7 @@ angular.module('app').controller('itemsController', function ($scope,$http) {
 
     }).error(function(err, code){
 
-        if(code == 403){
+        if(code == 401){
             $scope.unauthorized = true;
         }
 
